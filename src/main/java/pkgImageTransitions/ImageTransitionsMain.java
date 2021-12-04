@@ -172,8 +172,8 @@ public class ImageTransitionsMain extends JFrame
 		this.getContentPane().add(m_ButtonPanel);
 		
 		// Create the Display Options button
-		m_DisplayOptionsBtn = new JButton(new ImageIcon("C:\\Users\\Taylor\\Desktop\\MightyPointPlayer-main\\MightyPointPlayer-main\\src\\main\\java\\pkgImageTransitions\\DisplayOptions.jpg"));
-//		m_DisplayOptionsBtn = new JButton(new ImageIcon(getClass().getResource("DisplayOptions.jpg")));
+//		m_DisplayOptionsBtn = new JButton(new ImageIcon("\\src\\main\\resources\\DisplayOptions.jpg"));
+		//m_DisplayOptionsBtn = new JButton(new ImageIcon(getClass().getResource("/DisplayOptions.jpg")));
 
 //		m_DisplayOptionsBtn.setPreferredSize(new Dimension(40, 40));
 //		m_DisplayOptionsBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -190,7 +190,7 @@ public class ImageTransitionsMain extends JFrame
 //		m_ButtonPanel.add(m_DisplayOptionsBtn);	
 		
 		// Create the select image directory button
-		m_SelectImageDirBtn = new JButton(new ImageIcon("C:\\Users\\Taylor\\Desktop\\MightyPointPlayer-main\\MightyPointPlayer-main\\src\\main\\java\\pkgImageTransitions\\OpenDirectory.jpg"));
+		m_SelectImageDirBtn = new JButton(new ImageIcon("src\\main\\resources\\OpenDirectory.jpg"));
 //		m_SelectImageDirBtn = new JButton(new ImageIcon(getClass().getResource("OpenDirectory.jpg")));
 		m_SelectImageDirBtn.setPreferredSize(new Dimension(40, 40));
 		m_SelectImageDirBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -243,7 +243,7 @@ public class ImageTransitionsMain extends JFrame
 		m_ButtonPanel.add(m_SelectImageDirBtn);	
 		
 		// Create the previous image button
-		m_PrevImageBtn = new JButton(new ImageIcon("C:\\Users\\Taylor\\Desktop\\MightyPointPlayer-main\\MightyPointPlayer-main\\src\\main\\java\\pkgImageTransitions\\BackArrow.jpg"));
+		m_PrevImageBtn = new JButton(new ImageIcon("src\\main\\resources\\BackArrow.jpg"));
 //		m_PrevImageBtn = new JButton(new ImageIcon(getClass().getResource("BackArrow.jpg")));
 		m_PrevImageBtn.setPreferredSize(new Dimension(40, 40));
 		m_PrevImageBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -260,7 +260,7 @@ public class ImageTransitionsMain extends JFrame
 		m_ButtonPanel.add(m_PrevImageBtn);	
 		
 		// Create the next image button
-		m_NextImageBtn = new JButton(new ImageIcon("C:\\Users\\Taylor\\Desktop\\MightyPointPlayer-main\\MightyPointPlayer-main\\src\\main\\java\\pkgImageTransitions\\NextArrow.jpg"));
+		m_NextImageBtn = new JButton(new ImageIcon("src\\main\\resources\\NextArrow.jpg"));
 //		m_NextImageBtn = new JButton(new ImageIcon(getClass().getResource("NextArrow.jpg")));
 		m_NextImageBtn.setPreferredSize(new Dimension(40, 40));
 		m_NextImageBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -279,7 +279,7 @@ public class ImageTransitionsMain extends JFrame
 		m_ButtonPanel.add(m_NextImageBtn);	
 
 		// Create the exit button
-		m_ExitBtn = new JButton(new ImageIcon("C:\\Users\\Taylor\\Desktop\\MightyPointPlayer-main\\MightyPointPlayer-main\\src\\main\\java\\pkgImageTransitions\\Exit.jpg"));
+		m_ExitBtn = new JButton(new ImageIcon("src\\main\\resources\\Exit.jpg"));
 //		m_ExitBtn = new JButton(new ImageIcon(getClass().getResource("Exit.jpg")));
 		m_ExitBtn.setPreferredSize(new Dimension(40, 40));
 		m_ExitBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
