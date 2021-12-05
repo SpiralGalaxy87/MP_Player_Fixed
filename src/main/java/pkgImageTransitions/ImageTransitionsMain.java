@@ -105,7 +105,7 @@ public class ImageTransitionsMain extends JFrame
 	private boolean m_bChangeManually = true;
 	
 	/** Time delay is using timer to change */
-	private int m_iTimeDelay = 5;
+	private float m_iTimeDelay = 5;
 	
 	//------------------------------------------
 	// Miscellaneous variables
@@ -119,6 +119,8 @@ public class ImageTransitionsMain extends JFrame
 	/** Vector of image names */
 	private Vector<String> m_vImageNames = null;
         private Vector<String> m_vSoundNames = null;
+        private Vector<Integer> m_vTransitions = null;
+        private Vector<Float> m_vTransitionLengths = null;
 	
 	/** Index of the current image */
 	private int m_iCurImageIdx;
@@ -347,11 +349,31 @@ public class ImageTransitionsMain extends JFrame
 	private void buildImageList()
 	{
             System.out.println("this ran");
-        // Create the vector of names
+            
+            
+        // Create the vector of image file paths
         if(m_vImageNames != null) // If we already have one
         	m_vImageNames.removeAllElements(); // Clean it out
         else                      // If we don't have one
         	m_vImageNames = new Vector(); // Create a new one.
+        
+         // Create the vector of transition
+        if(m_vTransitionLengths != null) // If we already have one
+        	m_vTransitionLengths.removeAllElements(); // Clean it out
+        else                      // If we don't have one
+        	m_vTransitionLengths= new Vector(); // Create a new one.
+               
+        // Create the vector of transition
+        if(m_vTransitions != null) // If we already have one
+        	m_vTransitions.removeAllElements(); // Clean it out
+        else                      // If we don't have one
+        	m_vTransitions= new Vector(); // Create a new one.
+               
+        // Create the vector of transition
+        if(m_vSoundNames != null) // If we already have one
+        	m_vSoundNames.removeAllElements(); // Clean it out
+        else                      // If we don't have one
+        	m_vSoundNames= new Vector(); // Create a new one.
                
         
         try(FileReader fileReader = new FileReader(m_sSlideshowFile)){
@@ -369,13 +391,24 @@ public class ImageTransitionsMain extends JFrame
             System.out.println(m_bChangeManually);
             
             //set image duration
-            m_iTimeDelay = (int) (long) jo.get("imageDuration");
+            m_iTimeDelay =  Float.parseFloat((String) jo.get("imageDuration"));
             
+            jo.get("imageDirectory");
             
             JSONArray images = (JSONArray) jo.get("images");
-            images.forEach( image -> m_vImageNames.add((String) image));
+            images.forEach( i -> m_vImageNames.add((String) i));
             
-        
+            System.out.println(m_vImageNames);
+            
+            JSONArray transitions = (JSONArray) jo.get("transitions");
+            transitions.forEach(t -> m_vTransitions.add(Integer.parseInt( (String) t)));
+            
+            JSONArray transitionLengths = (JSONArray) jo.get("transitionLengths");
+            transitionLengths.forEach(l -> m_vTransitionLengths.add(Float.parseFloat( (String) l)));
+            
+            JSONArray sounds = (JSONArray) jo.get("sounds");
+            sounds.forEach(s -> m_vSoundNames.add((String) s));
+            
             
         } catch(FileNotFoundException e){
             System.err.println("FileNotFoundException: " + e.getMessage());
@@ -434,7 +467,7 @@ public class ImageTransitionsMain extends JFrame
 					"Error Loading Image", JOptionPane.ERROR_MESSAGE);
 			return;
         }
-        m_ImagePanel.setImage(m_TheImage);
+        m_ImagePanel.setImage(m_TheImage, m_vTransitions.elementAt(idx), m_vTransitionLengths.elementAt(idx));
 	}
 	
 	//----------------------------------------------------------------------
@@ -471,7 +504,7 @@ public class ImageTransitionsMain extends JFrame
 		m_NextImageBtn.setEnabled(false);
 		
 		// Create a javax.swing.timer
-		m_SSTimer = new Timer(m_iTimeDelay * 1000,
+		m_SSTimer = new Timer((int) m_iTimeDelay * 1000,
 			new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e)

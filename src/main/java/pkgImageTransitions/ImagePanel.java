@@ -115,7 +115,7 @@ public class ImagePanel extends JPanel
 	//--------------------------------------------------------
 	/** Set the reference to the image to be drawn. */
 	//--------------------------------------------------------
-	public void setImage(BufferedImage nextImg)
+	public void setImage(BufferedImage nextImg, int transIdx, float transTime)
 	{
 		theImage = nextImg;
 		
@@ -160,12 +160,9 @@ public class ImagePanel extends JPanel
         // Draw into m_NextImage
 		Graphics gNext = m_NextImage.getGraphics();
 		gNext.drawImage(nextImg, posX, posY, imgScaleWidth, imgScaleHeight, this);
-
-		// Randomly select a transition and pass this on to it
-		int transIdx = m_RandGen.nextInt(m_vTransitions.size());
 		
 		// Do random transition taking 2.0 seconds
-		m_vTransitions.elementAt(transIdx).DrawImageTransition(this, m_CurrentImage, m_NextImage, 2.0);
+		m_vTransitions.elementAt(transIdx).DrawImageTransition(this, m_CurrentImage, m_NextImage, transTime);
 		// For testing a single transition comment out the above line and put the appropriate
 		//   index in the vector of transitions in the call to m_vTransitions.elemantAt(i)
 //		m_vTransitions.elementAt(5).DrawImageTransition(this, m_CurrentImage, m_NextImage, 2.0);  
