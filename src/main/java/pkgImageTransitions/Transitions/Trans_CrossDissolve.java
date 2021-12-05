@@ -62,11 +62,20 @@ public class Trans_CrossDissolve extends Transition
 			gPan.drawImage(ImageA, 0,0, imgPanel); // Copy ImageA into panel
 			// Note: Can not pause here like we do in the other transitions because
 			//     cross dissolve takes longer than a simple blit draw
+                        try 
+			{
+			    Thread.sleep(timeInc);                 
+			} 
+			catch(InterruptedException ex) 
+			{
+			    Thread.currentThread().interrupt();
+			}  
 		}	
 		// Move m_NextImage into m_CurrentImage for next time -  May not need this
 		ImageA.getGraphics().drawImage(ImageB, 0, 0, imgPanel);
 		// And one final draw to the panel to be sure it's all there
 		gPan.drawImage(ImageA, 0,0, imgPanel); 
+                
 	}
 	
 	//---------------------------------------------------
