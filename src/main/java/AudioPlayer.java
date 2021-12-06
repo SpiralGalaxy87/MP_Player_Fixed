@@ -45,7 +45,7 @@ public class AudioPlayer {
         
         //skip song
         
-        long clipTimePos=clip.getMicrosecondPosition();//keeps sart position of song
+        long clipTimePos=clip.getMicrosecondPosition();//keeps start position of song
         
         
         while(clipTimePos<clip.getMicrosecondLength()) //while current frame position is less than song length

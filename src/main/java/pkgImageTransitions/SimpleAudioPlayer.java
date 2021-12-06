@@ -5,8 +5,6 @@
 package pkgImageTransitions;
 import java.io.File;
 import java.io.IOException;
-import java.util.Scanner;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -20,26 +18,43 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 class SimpleAudioPlayer {
     Long currentFrame;
     Clip clip;
-
+    
+    private String filePath = null;
+    private int i = 0;
+    private final int songCount = ImageTransitionsMain.m_vSoundNames.size();
+    boolean isPlaying = false;
     private SimpleAudioPlayer m_TheSound = null;
     // current status of clip
     String status;
 
     AudioInputStream audioInputStream;
-    static String filePath;
-     public SimpleAudioPlayer()throws UnsupportedAudioFileException,IOException, LineUnavailableException
+    
+    public SimpleAudioPlayer()throws UnsupportedAudioFileException,IOException, LineUnavailableException, InterruptedException
     {
         // create AudioInputStream object
-         filePath = "C:\\Users\\Taylor\\Desktop\\MightyPointPlayer-main\\MightyPointPlayer-main\\src\\main\\java\\pkgImageTransitions\\ccr.wav";
-        audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+        if(i <= songCount){
+            System.out.println(songCount);
+            filePath = ImageTransitionsMain.m_vSoundNames.get(i);
+            audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+            // create clip reference
+            clip = AudioSystem.getClip();
+            // open audioInputStream to the clip
+            clip.open(audioInputStream);
+            clip.start();
+            i++;
+        }else{
+            i = 0;
+            filePath = ImageTransitionsMain.m_vSoundNames.get(i);
+            audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
+            // create clip reference
+            clip = AudioSystem.getClip();
 
-        // create clip reference
-        clip = AudioSystem.getClip();
-
-        // open audioInputStream to the clip
-        clip.open(audioInputStream);
-
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+            // open audioInputStream to the clip
+            clip.open(audioInputStream);
+            clip.start();
+            i++;            
+        }
+      
     }
 
     public void play()

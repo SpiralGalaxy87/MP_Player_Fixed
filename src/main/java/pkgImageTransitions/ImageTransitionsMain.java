@@ -56,14 +56,13 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  *    and display them sequentially.  The user can switch images by clicking
  *    a button to move forward or backward in the list of images or by 
  *    using a timer to produce a slideshow.
- *  Author: Dr. Rick Coleman
- *  Date: April 2008
+
  */
 //=============================================================================
 public class ImageTransitionsMain extends JFrame
 {
 	/** Programmer ID */
-	public String m_sID = "Dr. Rick Coleman";
+	public String m_sID = "Team F (Slideshow Editor)";
 	
 	/** Main screen width - based on screen width */
 	public int m_iScnWidth;
@@ -118,7 +117,7 @@ public class ImageTransitionsMain extends JFrame
 	
 	/** Vector of image names */
 	private Vector<String> m_vImageNames = null;
-        private Vector<String> m_vSoundNames = null;
+        public static Vector<String> m_vSoundNames = null;
         private Vector<Integer> m_vTransitions = null;
         private Vector<Float> m_vTransitionLengths = null;
 	
@@ -152,7 +151,7 @@ public class ImageTransitionsMain extends JFrame
         m_iScnWidth = d.width - 100;
         m_iScnHeight = d.height - 100;
         
-        //this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocation(5, 5);
         this.setTitle("Slide Show Transitions Demonstration");
 		this.setSize(m_iScnWidth, m_iScnHeight);
@@ -207,9 +206,9 @@ public class ImageTransitionsMain extends JFrame
 						if(m_sSlideshowFile != null)
 						{
                                                    
-                                                       buildImageList();
-                                                       showImage(m_iCurImageIdx); // Show first image
-                                                        filePath = "C:\\Users\\Taylor\\Desktop\\MightyPointPlayer-main\\MightyPointPlayer-main\\src\\main\\java\\pkgImageTransitions\\ccr.wav";
+                                                        buildImageList();
+                                                        showImage(m_iCurImageIdx); // Show first image
+                                                        filePath = m_vSoundNames.get(0);
                                                         try{
                                                         SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
                                                         
