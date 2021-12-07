@@ -47,6 +47,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.Icon;
        
 
 //=============================================================================
@@ -56,14 +57,13 @@ import javax.sound.sampled.UnsupportedAudioFileException;
  *    and display them sequentially.  The user can switch images by clicking
  *    a button to move forward or backward in the list of images or by 
  *    using a timer to produce a slideshow.
- *  Author: Dr. Rick Coleman
- *  Date: April 2008
+
  */
 //=============================================================================
 public class ImageTransitionsMain extends JFrame
 {
 	/** Programmer ID */
-	public String m_sID = "Dr. Rick Coleman";
+	public String m_sID = "Team F (Slideshow Editor)";
 	
 	/** Main screen width - based on screen width */
 	public int m_iScnWidth;
@@ -118,7 +118,7 @@ public class ImageTransitionsMain extends JFrame
 	
 	/** Vector of image names */
 	private Vector<String> m_vImageNames = null;
-        private Vector<String> m_vSoundNames = null;
+        public static Vector<String> m_vSoundNames = null;
         private Vector<Integer> m_vTransitions = null;
         private Vector<Float> m_vTransitionLengths = null;
 	
@@ -141,7 +141,7 @@ public class ImageTransitionsMain extends JFrame
 	//---------------------------------------------------
 	/** Default constructor */
 	//---------------------------------------------------
-	public ImageTransitionsMain()
+	public ImageTransitionsMain() throws IOException
 	{
 		//------------------------------------------
 		// Set all parameters for this JFrame object
@@ -152,7 +152,7 @@ public class ImageTransitionsMain extends JFrame
         m_iScnWidth = d.width - 100;
         m_iScnHeight = d.height - 100;
         
-        //this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocation(5, 5);
         this.setTitle("Slide Show Transitions Demonstration");
 		this.setSize(m_iScnWidth, m_iScnHeight);
@@ -192,7 +192,8 @@ public class ImageTransitionsMain extends JFrame
 //		m_ButtonPanel.add(m_DisplayOptionsBtn);	
 		
 		// Create the select image directory button
-		m_SelectImageDirBtn = new JButton(new ImageIcon("src\\main\\resources\\OpenDirectory.jpg"));
+                var image1 = ImageIO.read(getClass().getResource("/OpenDirectory.jpg"));
+		m_SelectImageDirBtn = new JButton(new ImageIcon(image1));
 //		m_SelectImageDirBtn = new JButton(new ImageIcon(getClass().getResource("OpenDirectory.jpg")));
 		m_SelectImageDirBtn.setPreferredSize(new Dimension(40, 40));
 		m_SelectImageDirBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -207,9 +208,9 @@ public class ImageTransitionsMain extends JFrame
 						if(m_sSlideshowFile != null)
 						{
                                                    
-                                                       buildImageList();
-                                                       showImage(m_iCurImageIdx); // Show first image
-                                                        filePath = "C:\\Users\\Taylor\\Desktop\\MightyPointPlayer-main\\MightyPointPlayer-main\\src\\main\\java\\pkgImageTransitions\\ccr.wav";
+                                                        buildImageList();
+                                                        showImage(m_iCurImageIdx); // Show first image
+                                                        filePath = m_vSoundNames.get(0);
                                                         try{
                                                         SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
                                                         
@@ -245,7 +246,8 @@ public class ImageTransitionsMain extends JFrame
 		m_ButtonPanel.add(m_SelectImageDirBtn);	
 		
 		// Create the previous image button
-		m_PrevImageBtn = new JButton(new ImageIcon("src\\main\\resources\\BackArrow.jpg"));
+                var pastArrowImg = ImageIO.read(getClass().getResource("/BackArrow.jpg"));
+		m_PrevImageBtn = new JButton(new ImageIcon(pastArrowImg));
 //		m_PrevImageBtn = new JButton(new ImageIcon(getClass().getResource("BackArrow.jpg")));
 		m_PrevImageBtn.setPreferredSize(new Dimension(40, 40));
 		m_PrevImageBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -262,7 +264,8 @@ public class ImageTransitionsMain extends JFrame
 		m_ButtonPanel.add(m_PrevImageBtn);	
 		
 		// Create the next image button
-		m_NextImageBtn = new JButton(new ImageIcon("src\\main\\resources\\NextArrow.jpg"));
+                var nextArrowImg = ImageIO.read(getClass().getResource("/NextArrow.jpg"));
+		m_NextImageBtn = new JButton(new ImageIcon(nextArrowImg));
 //		m_NextImageBtn = new JButton(new ImageIcon(getClass().getResource("NextArrow.jpg")));
 		m_NextImageBtn.setPreferredSize(new Dimension(40, 40));
 		m_NextImageBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -281,7 +284,8 @@ public class ImageTransitionsMain extends JFrame
 		m_ButtonPanel.add(m_NextImageBtn);	
 
 		// Create the exit button
-		m_ExitBtn = new JButton(new ImageIcon("src\\main\\resources\\Exit.jpg"));
+                var exitImg = ImageIO.read(getClass().getResource("/Exit.jpg"));
+		m_ExitBtn = new JButton(new ImageIcon(exitImg));
 //		m_ExitBtn = new JButton(new ImageIcon(getClass().getResource("Exit.jpg")));
 		m_ExitBtn.setPreferredSize(new Dimension(40, 40));
 		m_ExitBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -596,7 +600,7 @@ public class ImageTransitionsMain extends JFrame
 	 * @param args - Array of strings from the command line
 	 */
 	//----------------------------------------------------------------------
-	public static void main(String[] args) 
+	public static void main(String[] args) throws IOException 
 	{
 		// When you start this application this function gets called by the
 		//  operating system.  Main just creates an ImageViewer object.
