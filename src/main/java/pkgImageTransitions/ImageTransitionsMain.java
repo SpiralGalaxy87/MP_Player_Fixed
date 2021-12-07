@@ -47,6 +47,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.Icon;
        
 
 //=============================================================================
@@ -140,7 +141,7 @@ public class ImageTransitionsMain extends JFrame
 	//---------------------------------------------------
 	/** Default constructor */
 	//---------------------------------------------------
-	public ImageTransitionsMain()
+	public ImageTransitionsMain() throws IOException
 	{
 		//------------------------------------------
 		// Set all parameters for this JFrame object
@@ -191,7 +192,8 @@ public class ImageTransitionsMain extends JFrame
 //		m_ButtonPanel.add(m_DisplayOptionsBtn);	
 		
 		// Create the select image directory button
-		m_SelectImageDirBtn = new JButton(new ImageIcon("src\\main\\resources\\OpenDirectory.jpg"));
+                var image1 = ImageIO.read(getClass().getResource("/OpenDirectory.jpg"));
+		m_SelectImageDirBtn = new JButton(new ImageIcon(image1));
 //		m_SelectImageDirBtn = new JButton(new ImageIcon(getClass().getResource("OpenDirectory.jpg")));
 		m_SelectImageDirBtn.setPreferredSize(new Dimension(40, 40));
 		m_SelectImageDirBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -244,7 +246,8 @@ public class ImageTransitionsMain extends JFrame
 		m_ButtonPanel.add(m_SelectImageDirBtn);	
 		
 		// Create the previous image button
-		m_PrevImageBtn = new JButton(new ImageIcon("src\\main\\resources\\BackArrow.jpg"));
+                var pastArrowImg = ImageIO.read(getClass().getResource("/BackArrow.jpg"));
+		m_PrevImageBtn = new JButton(new ImageIcon(pastArrowImg));
 //		m_PrevImageBtn = new JButton(new ImageIcon(getClass().getResource("BackArrow.jpg")));
 		m_PrevImageBtn.setPreferredSize(new Dimension(40, 40));
 		m_PrevImageBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -261,7 +264,8 @@ public class ImageTransitionsMain extends JFrame
 		m_ButtonPanel.add(m_PrevImageBtn);	
 		
 		// Create the next image button
-		m_NextImageBtn = new JButton(new ImageIcon("src\\main\\resources\\NextArrow.jpg"));
+                var nextArrowImg = ImageIO.read(getClass().getResource("/NextArrow.jpg"));
+		m_NextImageBtn = new JButton(new ImageIcon(nextArrowImg));
 //		m_NextImageBtn = new JButton(new ImageIcon(getClass().getResource("NextArrow.jpg")));
 		m_NextImageBtn.setPreferredSize(new Dimension(40, 40));
 		m_NextImageBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -280,7 +284,8 @@ public class ImageTransitionsMain extends JFrame
 		m_ButtonPanel.add(m_NextImageBtn);	
 
 		// Create the exit button
-		m_ExitBtn = new JButton(new ImageIcon("src\\main\\resources\\Exit.jpg"));
+                var exitImg = ImageIO.read(getClass().getResource("/Exit.jpg"));
+		m_ExitBtn = new JButton(new ImageIcon(exitImg));
 //		m_ExitBtn = new JButton(new ImageIcon(getClass().getResource("Exit.jpg")));
 		m_ExitBtn.setPreferredSize(new Dimension(40, 40));
 		m_ExitBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -595,7 +600,7 @@ public class ImageTransitionsMain extends JFrame
 	 * @param args - Array of strings from the command line
 	 */
 	//----------------------------------------------------------------------
-	public static void main(String[] args) 
+	public static void main(String[] args) throws IOException 
 	{
 		// When you start this application this function gets called by the
 		//  operating system.  Main just creates an ImageViewer object.
