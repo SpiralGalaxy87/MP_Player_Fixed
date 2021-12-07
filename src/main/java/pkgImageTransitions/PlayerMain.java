@@ -47,6 +47,7 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.Icon;
        
 
 //=============================================================================
@@ -65,7 +66,7 @@ import javax.sound.sampled.UnsupportedAudioFileException;
 public class PlayerMain extends JFrame
 {
 	/** Programmer ID */
-	public String m_sID = "Dr. Rick Coleman";
+	public String m_sID = "Team F (Slideshow Editor)";
 	
 	/** Main screen width - based on screen width */
 	public int m_iScnWidth;
@@ -120,7 +121,7 @@ public class PlayerMain extends JFrame
 	
 	/** Vector of image names */
 	private Vector<String> m_vImageNames = null;
-        private Vector<String> m_vSoundNames = null;
+        public static Vector<String> m_vSoundNames = null;
         private Vector<Integer> m_vTransitions = null;
         private Vector<Float> m_vTransitionLengths = null;
 	
@@ -143,7 +144,7 @@ public class PlayerMain extends JFrame
 	//---------------------------------------------------
 	/** Default constructor */
 	//---------------------------------------------------
-	public PlayerMain()
+	public PlayerMain() throws IOException
 	{
 		//------------------------------------------
 		// Set all parameters for this JFrame object
@@ -154,7 +155,7 @@ public class PlayerMain extends JFrame
         m_iScnWidth = d.width - 100;
         m_iScnHeight = d.height - 100;
         
-        //this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocation(5, 5);
         this.setTitle("Slide Show Transitions Demonstration");
 		this.setSize(m_iScnWidth, m_iScnHeight);
@@ -175,26 +176,10 @@ public class PlayerMain extends JFrame
 		// Use the default Flow Layout manager
 		this.getContentPane().add(m_ButtonPanel);
 		
-		// Create the Display Options button
-//		m_DisplayOptionsBtn = new JButton(new ImageIcon("\\src\\main\\resources\\DisplayOptions.jpg"));
-		//m_DisplayOptionsBtn = new JButton(new ImageIcon(getClass().getResource("/DisplayOptions.jpg")));
-
-//		m_DisplayOptionsBtn.setPreferredSize(new Dimension(40, 40));
-//		m_DisplayOptionsBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
-//		m_DisplayOptionsBtn.setToolTipText("Click to set display options.");
-//		m_DisplayOptionsBtn.addActionListener(
-//				new ActionListener()
-//				{
-//					public void actionPerformed(ActionEvent e)
-//					{
-//						//	Handle setting the display options
-//						setDisplayOptions();
-//					}
-//				});
-//		m_ButtonPanel.add(m_DisplayOptionsBtn);	
 		
 		// Create the select image directory button
-		m_SelectImageDirBtn = new JButton(new ImageIcon("src\\main\\resources\\OpenDirectory.jpg"));
+                var image1 = ImageIO.read(getClass().getResource("/OpenDirectory.jpg"));
+		m_SelectImageDirBtn = new JButton(new ImageIcon(image1));
 //		m_SelectImageDirBtn = new JButton(new ImageIcon(getClass().getResource("OpenDirectory.jpg")));
 		m_SelectImageDirBtn.setPreferredSize(new Dimension(40, 40));
 		m_SelectImageDirBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -209,9 +194,9 @@ public class PlayerMain extends JFrame
 						if(m_sSlideshowFile != null)
 						{
                                                    
-                                                       buildImageList();
-                                                       showImage(m_iCurImageIdx); // Show first image
-                                                        filePath = "C:\\Users\\Taylor\\Desktop\\MightyPointPlayer-main\\MightyPointPlayer-main\\src\\main\\java\\pkgImageTransitions\\ccr.wav";
+                                                        buildImageList();
+                                                        showImage(m_iCurImageIdx); // Show first image
+                                                        filePath = m_vSoundNames.get(0);
                                                         try{
                                                         SimpleAudioPlayer audioPlayer = new SimpleAudioPlayer();
                                                         
@@ -220,21 +205,8 @@ public class PlayerMain extends JFrame
                                                         catch (Exception ex)
                                                         {
                                                              System.out.println("Error with playing sound.");
-            ex.printStackTrace();                            ex.printStackTrace();
+                                                                ex.printStackTrace();                            
                                                         }
-                                                       /*buildSoundsList();
-                                                       System.out.print("sound built");
-                                                        try {
-                                                    playSound(m_iCurSoundIdx);
-                                                    
-                                                     System.out.print("sound shoulda played");
-                                                } catch (UnsupportedAudioFileException ex) {
-                                                    Logger.getLogger(PlayerMain.class.getName()).log(Level.SEVERE, null, ex);
-                                                } catch (IOException ex) {
-                                                    Logger.getLogger(PlayerMain.class.getName()).log(Level.SEVERE, null, ex);
-                                                } catch (LineUnavailableException ex) {
-                                                    Logger.getLogger(PlayerMain.class.getName()).log(Level.SEVERE, null, ex);
-                                                }*/
                                                  
 						}
 						// Are we doing a slideshow with timer?
@@ -247,7 +219,8 @@ public class PlayerMain extends JFrame
 		m_ButtonPanel.add(m_SelectImageDirBtn);	
 		
 		// Create the previous image button
-		m_PrevImageBtn = new JButton(new ImageIcon("src\\main\\resources\\BackArrow.jpg"));
+                var pastArrowImg = ImageIO.read(getClass().getResource("/BackArrow.jpg"));
+		m_PrevImageBtn = new JButton(new ImageIcon(pastArrowImg));
 //		m_PrevImageBtn = new JButton(new ImageIcon(getClass().getResource("BackArrow.jpg")));
 		m_PrevImageBtn.setPreferredSize(new Dimension(40, 40));
 		m_PrevImageBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -264,7 +237,8 @@ public class PlayerMain extends JFrame
 		m_ButtonPanel.add(m_PrevImageBtn);	
 		
 		// Create the next image button
-		m_NextImageBtn = new JButton(new ImageIcon("src\\main\\resources\\NextArrow.jpg"));
+                var nextArrowImg = ImageIO.read(getClass().getResource("/NextArrow.jpg"));
+		m_NextImageBtn = new JButton(new ImageIcon(nextArrowImg));
 //		m_NextImageBtn = new JButton(new ImageIcon(getClass().getResource("NextArrow.jpg")));
 		m_NextImageBtn.setPreferredSize(new Dimension(40, 40));
 		m_NextImageBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -283,7 +257,8 @@ public class PlayerMain extends JFrame
 		m_ButtonPanel.add(m_NextImageBtn);	
 
 		// Create the exit button
-		m_ExitBtn = new JButton(new ImageIcon("src\\main\\resources\\Exit.jpg"));
+                var exitImg = ImageIO.read(getClass().getResource("/Exit.jpg"));
+		m_ExitBtn = new JButton(new ImageIcon(exitImg));
 //		m_ExitBtn = new JButton(new ImageIcon(getClass().getResource("Exit.jpg")));
 		m_ExitBtn.setPreferredSize(new Dimension(40, 40));
 		m_ExitBtn.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -510,76 +485,12 @@ public class PlayerMain extends JFrame
 		m_SSTimer.start();  // Start the timer
 	}
 
-        
-        private void buildSoundsList()
-        {
-             // Create the vector of names
-        if(m_vSoundNames != null) // If we already have one
-        	m_vSoundNames.removeAllElements(); // Clean it out
-        else                      // If we don't have one
-        	m_vSoundNames = new Vector(); // Create a new one.
-        try(FileReader fileReader = new FileReader(m_sSlideshowFile)){
-         JSONParser jsonParser = new JSONParser();
-
-        // Read JSON file
-        Object obj = jsonParser.parse(fileReader);
-
-        JSONObject jo = (JSONObject) obj;
-        JSONArray sounds = (JSONArray) jo.get("sounds");
-       
-        
-        sounds.forEach(sound -> m_vSoundNames.add((String) sound));
-        System.out.print(m_vSoundNames);
-        }
-        
-        catch(FileNotFoundException e){
-        System.err.println("FileNotFoundException: " + e.getMessage());
-        } catch(IOException e){
-        System.err.println("IOException: " + e.getMessage());
-        } catch(ParseException e){
-        System.err.println("ParseException: " + e.getMessage());
-        }
-
-        m_iCurSoundIdx = 0; // Initialize the current sound index
-        }
-        
-        private void playSound(int idx) throws UnsupportedAudioFileException, IOException, LineUnavailableException
-        {
-            File soundFile;
-            if(m_vSoundNames.size() < 0 || (idx >= m_vSoundNames.size()))
-            {
-                System.out.print("error sound");
-                JOptionPane.showMessageDialog(this, "Error: Unable to load sound"+idx+", does not exist.","Error Loading Sound",JOptionPane.ERROR_MESSAGE);
-                return;     
-            }
-            soundFile = new File((String)m_vSoundNames.elementAt(idx));
-            if(!soundFile.exists())
-            {
-                System.out.print("found sound file");
-                JOptionPane.showMessageDialog(this,
-                "Error: Unable to load " + (String)(m_vSoundNames.elementAt(idx)),
-                "Error Loading Image", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            
-            System.out.println("Sounds");
-            /* audioInputStream = AudioSystem.getAudioInputStream(new File(filePath).getAbsoluteFile());
-            clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.loop(Clip.LOOP_CONTINUOUSLY);
-            //m_vSoundNames.add(filePath);
-            */
-            System.out.print("sound shoulda played");
-           // m_TheSound.play();
-            
-        
-        }
 	//----------------------------------------------------------------------
 	/** Main function for this demonstration
 	 * @param args - Array of strings from the command line
 	 */
 	//----------------------------------------------------------------------
-	public static void main(String[] args) 
+	public static void main(String[] args) throws IOException 
 	{
 		// When you start this application this function gets called by the
 		//  operating system.  Main just creates an ImageViewer object.

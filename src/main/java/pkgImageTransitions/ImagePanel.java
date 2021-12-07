@@ -3,7 +3,6 @@ package pkgImageTransitions;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
