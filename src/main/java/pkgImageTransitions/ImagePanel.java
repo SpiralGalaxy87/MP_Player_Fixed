@@ -21,9 +21,15 @@ import pkgImageTransitions.Transitions.Trans_WipeLeft;
 import pkgImageTransitions.Transitions.Trans_WipeRight;
 import pkgImageTransitions.Transitions.Trans_WipeUp;
 
-//============================================================================
-/** This class implements the panel on which all images are drawn */
-//===========================================================================
+//=============================================================================
+/**
+ *  This class was modified by Team F (Slideshow Editor), from Rick Coleman's 2008 version.
+ *  Submitted on 12/7/2021.
+ *  
+ *  Class: ImagePanel
+ *  Purpose: This class handles the display of images in the Player window.
+ */
+//=============================================================================
 public class ImagePanel extends JPanel
 {
 	/** the parent JFrame */
@@ -47,9 +53,6 @@ public class ImagePanel extends JPanel
 	//----- Transition variables -----
 	/** Vector of transition objects */
 	private Vector<Transition> m_vTransitions;
-	
-	/** Random number generator used to select the transition to use */
-	private Random m_RandGen;
 	
 	//--------------------------------------------------------
 	/** Default constructor */
@@ -105,7 +108,6 @@ public class ImagePanel extends JPanel
 		Trans_PushDown tpd = new Trans_PushDown();
 		m_vTransitions.add(tpd);
 		
-		m_RandGen = new Random();
 		
 		// Draw black frame as first image
 		m_CurrentImage.getGraphics().setColor(Color.BLACK);
@@ -161,7 +163,7 @@ public class ImagePanel extends JPanel
 		Graphics gNext = m_NextImage.getGraphics();
 		gNext.drawImage(nextImg, posX, posY, imgScaleWidth, imgScaleHeight, this);
 		
-		// Do random transition taking 2.0 seconds
+		// Do the corresponding transition
 		m_vTransitions.elementAt(transIdx).DrawImageTransition(this, m_CurrentImage, m_NextImage, transTime);
 		// For testing a single transition comment out the above line and put the appropriate
 		//   index in the vector of transitions in the call to m_vTransitions.elemantAt(i)

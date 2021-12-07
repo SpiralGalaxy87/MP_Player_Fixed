@@ -50,17 +50,19 @@ import javax.sound.sampled.UnsupportedAudioFileException;
        
 
 //=============================================================================
-/** Class: ImageViewer
- *  Purpose: This class implements the main window for an image viewer utility.
- *    It allows the user to select a directory of images (.jpg and/or .gif)
- *    and display them sequentially.  The user can switch images by clicking
+/**
+ *  This class has been created and developed by Team F (Slideshow Editor).
+ *  Submitted on 12/7/2021.
+ *  
+ *  Class: PlayerMain, derived from Rick Coleman's version
+ *  Purpose: This class implements the main window for the Player application.
+ *    It allows the user to select a slideshow file specifying a sequence of 
+ *    images to display sequentially. The user can switch images by clicking
  *    a button to move forward or backward in the list of images or by 
  *    using a timer to produce a slideshow.
- *  Author: Dr. Rick Coleman
- *  Date: April 2008
  */
 //=============================================================================
-public class ImageTransitionsMain extends JFrame
+public class PlayerMain extends JFrame
 {
 	/** Programmer ID */
 	public String m_sID = "Dr. Rick Coleman";
@@ -141,7 +143,7 @@ public class ImageTransitionsMain extends JFrame
 	//---------------------------------------------------
 	/** Default constructor */
 	//---------------------------------------------------
-	public ImageTransitionsMain()
+	public PlayerMain()
 	{
 		//------------------------------------------
 		// Set all parameters for this JFrame object
@@ -227,11 +229,11 @@ public class ImageTransitionsMain extends JFrame
                                                     
                                                      System.out.print("sound shoulda played");
                                                 } catch (UnsupportedAudioFileException ex) {
-                                                    Logger.getLogger(ImageTransitionsMain.class.getName()).log(Level.SEVERE, null, ex);
+                                                    Logger.getLogger(PlayerMain.class.getName()).log(Level.SEVERE, null, ex);
                                                 } catch (IOException ex) {
-                                                    Logger.getLogger(ImageTransitionsMain.class.getName()).log(Level.SEVERE, null, ex);
+                                                    Logger.getLogger(PlayerMain.class.getName()).log(Level.SEVERE, null, ex);
                                                 } catch (LineUnavailableException ex) {
-                                                    Logger.getLogger(ImageTransitionsMain.class.getName()).log(Level.SEVERE, null, ex);
+                                                    Logger.getLogger(PlayerMain.class.getName()).log(Level.SEVERE, null, ex);
                                                 }*/
                                                  
 						}
@@ -299,27 +301,6 @@ public class ImageTransitionsMain extends JFrame
 		
 		// Make the window visible
 		this.setVisible(true);
-	}
-
-	//----------------------------------------------------------------------
-	/** Show a dialog box for the user to set the display options */
-	//----------------------------------------------------------------------
-	private void setDisplayOptions()
-	{
-		int retVal;
-		
-		// Create and show a dialog box
-		SetDisplayOptionsDlg dlg = new SetDisplayOptionsDlg(this, true);
-		dlg.setVisible(true); // show it
-		retVal = dlg.getExitStatus();
-		if(retVal == 0) // If the user clicked OK get the values
-		{
-			m_bScaleImages = dlg.getScaleImage();
-			m_iShowTypes = dlg.getShowTypes();
-			m_bChangeManually = dlg.getChangeManually();
-			m_iTimeDelay = dlg.getTimeDelay();
-		}
-		dlg.dispose(); // Destroy the dialog box
 	}
 	
 	//----------------------------------------------------------------------
@@ -408,6 +389,8 @@ public class ImageTransitionsMain extends JFrame
             
             JSONArray sounds = (JSONArray) jo.get("sounds");
             sounds.forEach(s -> m_vSoundNames.add((String) s));
+            
+            System.out.println(m_vSoundNames);
             
             
         } catch(FileNotFoundException e){
@@ -603,7 +586,7 @@ public class ImageTransitionsMain extends JFrame
 		//  To follow the execution trail from here go to the ImageViewer
 		//  constructor.
             
-		ImageTransitionsMain IV = new ImageTransitionsMain();
+		PlayerMain IV = new PlayerMain();
 	}
 
 }

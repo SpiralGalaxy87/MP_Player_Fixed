@@ -13,10 +13,15 @@ import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+//=============================================================================
 /**
- *
- * @author Taylor
+ *  This class was created and developed by Team F (Slideshow Editor). 
+ *  Submitted on 12/7/2021.
+ *  
+ *  Class: SimpleAudioPlayer
+ *  Purpose: This class handles playing the audio files (specified by the user-selected slideshow file) in the Player application.
  */
+//=============================================================================
 class SimpleAudioPlayer {
     Long currentFrame;
     Clip clip;

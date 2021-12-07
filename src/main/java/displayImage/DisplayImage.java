@@ -5,9 +5,9 @@
  */
 package displayImage;
 
-/*
- * @Author Taylor
- * @Co-Author Roberto
+/* 
+ * This class has been created and developed by Team F (Slideshow Editor).
+ * Submitted on 12/7/2021
  */
 
 import java.awt.image.BufferedImage;
