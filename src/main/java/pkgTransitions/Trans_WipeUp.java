@@ -1,21 +1,20 @@
-package pkgImageTransitions.Transitions;
+package pkgTransitions;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import pkgImageTransitions.Transition;
+import pkgPlayer.Transition;
 
-public class Trans_PushLeft extends Transition
+public class Trans_WipeUp extends Transition
 {
-	
 	//---------------------------------------------------
 	// Default constructor
 	//---------------------------------------------------
-	public Trans_PushLeft()
+	public Trans_WipeUp()
 	{
-		m_sType = "PUSH_LEFT";
+		m_sType = "WIPE_UP";
 	}
 	
 	//---------------------------------------------------
@@ -27,15 +26,10 @@ public class Trans_PushLeft extends Transition
 	//  time - Number of seconds to take to do this transition
 	// Note both off screen BufferedImages have already been
 	// scaled to exactly fit in the area of the imgPanel
-	// Note 2: We need some way of estimating the time required
-	//    to do a draw otherwise the time value is useless.
-	//    Some platforms execute the transitions very rapidly
-	//    others take much longer
 	// Basic algorithm:
 	//   For each iteration
-	//      Gradually decreasing in width sections of A are drawn then gradually increasing in width
-	//			sections of B are draw in place of A giving the appearance of A gradually sliding
-	//	        to the left while B slides in from the right.
+	//      Copy from B iterationIndex * incX of B onto the screen overwriting Image A that is there
+	//	        Sections of B are drawn from bottom to top
 	//---------------------------------------------------------
 	public void DrawImageTransition(JPanel imgPanel, BufferedImage ImageA, BufferedImage ImageB, double time)
 	{
@@ -43,25 +37,20 @@ public class Trans_PushLeft extends Transition
 		Graphics gA = ImageA.getGraphics();
 		
 		// Dimension holders
-		int dAX2, sAX1;			// Source and destination dimensions for imageA 
-		int sBX2;				// Source dimensions for imageB
+		int bY1, bY2;		// Dimensions for imageA
 		int imgWidth, imgHeight;
-		int incX;					// X increment each time
+		int incY;					// Y increment each time
 		int numIterations = 50;		// Number of iterations in the sweep
 		int timeInc;				// Milliseconds to pause each time
 		timeInc = (int)(time * 1000) / numIterations;
 		
 		imgWidth = imgPanel.getWidth();
 		imgHeight = imgPanel.getHeight();
-		incX = imgWidth / numIterations;		// Do 1/20 each time to start
-		
-		// Initialize the dimensions for section of ImageA to move in itself
-		sAX1 = incX;			// Source left X of rectangle to move from A
-		dAX2 = imgWidth - incX; // Destination right X of rectangle to move from A
+		incY = imgHeight / numIterations;		// Do 1/20 each time to start
 		
 		// Initialize the dimensions for section of ImageB to draw into ImageA
-		sBX2 = incX;
-//		dBX2 = imgHeight;
+		bY1 = imgHeight - incY;
+		bY2 = imgHeight;
 
         // Draw the scaled current image if necessary
 		gPan.drawImage(ImageA, 0, 0, imgPanel);
@@ -69,15 +58,10 @@ public class Trans_PushLeft extends Transition
 		// Draw image A
 		for(int i=0; i<numIterations; i++)
 		{
-			// Move section of A to the screen
-			gPan.drawImage(ImageA, 0, 0, dAX2, imgHeight, sAX1, 0, imgWidth, imgHeight, null);
-			// Move section of B to the screen
-			gPan.drawImage(ImageB, dAX2, 0, imgWidth, imgHeight, 0, 0, sBX2, imgHeight, null); // Draw portion of ImageB into ImageA
-//			gPan.drawImage(ImageA, 0,0, imgPanel); // Copy ImageA into panel
-			// Take a bigger section next time
-			sAX1 += incX;
-			dAX2 -= incX;
-			sBX2 += incX;
+			// Draw part of B into A
+			gPan.drawImage(ImageB, 0, bY1, imgWidth, bY2, 0, bY1, imgWidth, bY2, null); // Draw portion of ImageB into ImageA
+			bY2 = bY1;
+			bY1 -= incY;  // Take a bigger section next time
 			// Pause a bit
 			try 
 			{
@@ -87,7 +71,7 @@ public class Trans_PushLeft extends Transition
 			{
 			    Thread.currentThread().interrupt();
 			} 
- 		}
+		}	
 		// Move m_NextImage into m_CurrentImage for next time -  May not need this
 		ImageA.getGraphics().drawImage(ImageB, 0, 0, imgPanel);
 		// And one final draw to the panel to be sure it's all there

@@ -1,4 +1,4 @@
-package pkgImageTransitions;
+package pkgPlayer;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,15 +10,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-import pkgImageTransitions.Transitions.Trans_CrossDissolve;
-import pkgImageTransitions.Transitions.Trans_PushDown;
-import pkgImageTransitions.Transitions.Trans_PushLeft;
-import pkgImageTransitions.Transitions.Trans_PushRight;
-import pkgImageTransitions.Transitions.Trans_PushUp;
-import pkgImageTransitions.Transitions.Trans_WipeDown;
-import pkgImageTransitions.Transitions.Trans_WipeLeft;
-import pkgImageTransitions.Transitions.Trans_WipeRight;
-import pkgImageTransitions.Transitions.Trans_WipeUp;
+import pkgTransitions.Trans_CrossDissolve;
+import pkgTransitions.Trans_PushDown;
+import pkgTransitions.Trans_PushLeft;
+import pkgTransitions.Trans_PushRight;
+import pkgTransitions.Trans_PushUp;
+import pkgTransitions.Trans_WipeDown;
+import pkgTransitions.Trans_WipeLeft;
+import pkgTransitions.Trans_WipeRight;
+import pkgTransitions.Trans_WipeUp;
 
 //=============================================================================
 /**

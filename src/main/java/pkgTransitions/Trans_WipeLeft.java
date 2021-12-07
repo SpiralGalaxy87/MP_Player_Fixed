@@ -1,20 +1,22 @@
-package pkgImageTransitions.Transitions;
+package pkgTransitions;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import pkgImageTransitions.Transition;
+import pkgPlayer.Transition;
 
-public class Trans_PushRight extends Transition
+public class Trans_WipeLeft extends Transition
 {
+	
 	//---------------------------------------------------
 	// Default constructor
 	//---------------------------------------------------
-	public Trans_PushRight()
+	public Trans_WipeLeft()
 	{
-		m_sType = "PUSH_RIGHT";
+		m_sType = "WIPE_LEFT";
 	}
 	
 	//---------------------------------------------------
@@ -26,11 +28,14 @@ public class Trans_PushRight extends Transition
 	//  time - Number of seconds to take to do this transition
 	// Note both off screen BufferedImages have already been
 	// scaled to exactly fit in the area of the imgPanel
+	// Note 2: We need some way of estimating the time required
+	//    to do a draw otherwise the time value is useless.
+	//    Some platforms execute the transitions very rapidly
+	//    others take much longer
 	// Basic algorithm:
 	//   For each iteration
-	//      Gradually decreasing in width sections of A are drawn then gradually increasing in width
-	//			sections of B are draw in place of A giving the appearance of A gradually sliding
-	//	        to the right while B slides in from the left.
+	//      Copy from B iterationIndex * incX of B onto the screen overwriting Image A that is there
+	//	        Sections of B are drawn from right to left
 	//---------------------------------------------------------
 	public void DrawImageTransition(JPanel imgPanel, BufferedImage ImageA, BufferedImage ImageB, double time)
 	{
@@ -38,8 +43,7 @@ public class Trans_PushRight extends Transition
 		Graphics gA = ImageA.getGraphics();
 		
 		// Dimension holders
-		int sAX2, dAX1;		// Dimensions for imageA - ImageA Source X2, ImageA Destination X2
-		int sBX1, dBX2;		// Dimensions for imageB - ImageB Source X2, ImageB Destination X1
+		int bX1, bX2;		// Dimensions for imageB
 		int imgWidth, imgHeight;
 		int incX;					// X increment each time
 		int numIterations = 50;		// Number of iterations in the sweep
@@ -48,32 +52,23 @@ public class Trans_PushRight extends Transition
 		
 		imgWidth = imgPanel.getWidth();
 		imgHeight = imgPanel.getHeight();
-		incX = imgWidth / numIterations;		// Do 1/20 each time to start
+		incX = imgWidth / numIterations;		// Do 1/numIterations each time
 		
-		// Initialize the dimensions for section of ImageA to move in itself
-		sAX2 = imgWidth - incX;		// right X of rectangle to move rightward in A
-		dAX1 = incX;				// left X of rectangle on screen to move section of A
-
 		// Initialize the dimensions for section of ImageB to draw into ImageA
-		sBX1 = imgWidth - incX;
-		dBX2 = incX;
+		bX1 = imgWidth - incX;
+		bX2 = incX;
 
-		// Draw the scaled current image if necessary
+        // Draw the scaled current image if necessary
 		gPan.drawImage(ImageA, 0, 0, imgPanel);
 
 		// Draw image A
 		for(int i=0; i<numIterations; i++)
 		{
-			// Move section of A to the right
-			gPan.drawImage(ImageA, dAX1, 0, imgWidth, imgHeight, 0, 0, sAX2, imgHeight, null);
-			// Draw part of B into A
-			gPan.drawImage(ImageB, 0, 0, dBX2, imgHeight, sBX1, 0, imgWidth, imgHeight, null); // Draw portion of ImageB into ImageA
-			// Take a bigger section next time
-			sAX2 -= incX;
-			dAX1 += incX;
-			sBX1 -= incX;
-			dBX2 += incX;
-			// Pause a bit
+			// Draw part of B over A on the screen
+			gPan.drawImage(ImageB, bX1, 0, imgWidth, imgHeight, bX1, 0, imgWidth, imgHeight, null); // Draw portion of ImageB into ImageA
+			bX2 = bX1;
+			bX1 -= incX;  // Move another section to the left of the previous section
+			// Pause a bit so we can actually see the transition
 			try 
 			{
 			    Thread.sleep(timeInc);                 
@@ -81,8 +76,8 @@ public class Trans_PushRight extends Transition
 			catch(InterruptedException ex) 
 			{
 			    Thread.currentThread().interrupt();
-			} 
-		}	
+			}
+		}
 		// Move m_NextImage into m_CurrentImage for next time -  May not need this
 		ImageA.getGraphics().drawImage(ImageB, 0, 0, imgPanel);
 		// And one final draw to the panel to be sure it's all there

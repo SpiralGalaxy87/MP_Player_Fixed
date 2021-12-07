@@ -1,22 +1,20 @@
-package pkgImageTransitions.Transitions;
+package pkgTransitions;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
-import java.awt.image.RescaleOp;
 
 import javax.swing.JPanel;
 
-import pkgImageTransitions.Transition;
+import pkgPlayer.Transition;
 
-public class Trans_CrossDissolve extends Transition
+public class Trans_WipeRight extends Transition
 {
 	//---------------------------------------------------
 	// Default constructor
 	//---------------------------------------------------
-	public Trans_CrossDissolve()
+	public Trans_WipeRight()
 	{
-		m_sType = "CROSS_DISSOLVE";
+		m_sType = "WIPE_RIGHT";
 	}
 	
 	//---------------------------------------------------
@@ -28,54 +26,56 @@ public class Trans_CrossDissolve extends Transition
 	//  time - Number of seconds to take to do this transition
 	// Note both off screen BufferedImages have already been
 	// scaled to exactly fit in the area of the imgPanel
-	// Cross dissolves need to be more gradual, i.e. more
-	//   redraws with a smaller increment on the alpha
+	// Basic algorithm:
+	//   For each iteration
+	//      Copy from B iterationIndex * incX of B onto the screen overwriting Image A that is there
+	//	        Sections of B are drawn from left to right
 	//---------------------------------------------------------
 	public void DrawImageTransition(JPanel imgPanel, BufferedImage ImageA, BufferedImage ImageB, double time)
 	{
 		Graphics gPan = imgPanel.getGraphics();
-		Graphics2D gA = ImageA.createGraphics();
+		Graphics gA = ImageA.getGraphics();
 		
+		// Dimension holders
+		int bX1, bX2;		// Dimensions for imageB
+		int imgWidth, imgHeight;
+		int incX;					// X increment each time
+		int numIterations = 50;		// Number of iterations in the sweep
 		int timeInc;				// Milliseconds to pause each time
-		timeInc = (int)(time * 1000) / 40;
-		// Create a BufferedImage ARGB to hold the image to overlay
-		BufferedImage ImageB_ARGB = new BufferedImage(ImageB.getWidth(), ImageB.getHeight(), BufferedImage.TYPE_INT_ARGB);
-		// Draw ImageB into ImageB_ARGB
-		ImageB_ARGB.getGraphics().drawImage(ImageB, 0, 0, null);
-		// Set up the initial fade data
-		// Create a rescale filter op 
-		float alphaInc = 0.20f;
-		float[] scales = { 1.0f, 1.0f, 1.0f, alphaInc};
-		float[] offsets = new float[4];
-		RescaleOp rop = new RescaleOp(scales, offsets, null);
+		timeInc = (int)(time * 1000) / numIterations;
+		
+		imgWidth = imgPanel.getWidth();
+		imgHeight = imgPanel.getHeight();
+		incX = imgWidth / numIterations;		// Do 1/20 each time to start
+		
+		// Initialize the dimensions for section of ImageB to draw into ImageA
+		bX1 = 0;
+		bX2 = incX;
 
         // Draw the scaled current image if necessary
 		gPan.drawImage(ImageA, 0, 0, imgPanel);
 
-		// Draw image A -- appears we need to do this fade longer
-		// Each time we redraw ImageB_ARGB over ImageA we add just a bit more
-		for(int i=0; i<15; i++)
+		// Draw image A
+		for(int i=0; i<numIterations; i++)
 		{
-			// Draw B over A. Note: Can't do the first draw directly into the screen panel
-			//	because that drawImage only works with BufferedImages as the destination.
-			gA.drawImage(ImageB_ARGB, rop, 0, 0); // Draw portion of ImageB into ImageA
-			gPan.drawImage(ImageA, 0,0, imgPanel); // Copy ImageA into panel
-			// Note: Can not pause here like we do in the other transitions because
-			//     cross dissolve takes longer than a simple blit draw
-                        try 
+			// Draw part of B into A
+			gPan.drawImage(ImageB, bX1, 0, bX2, imgHeight, bX1, 0, bX2, imgHeight, null); // Draw portion of ImageB into ImageA
+			bX1 = bX2;
+			bX2 += incX;  // Take a bigger section next time
+			// Pause a bit
+			try 
 			{
 			    Thread.sleep(timeInc);                 
 			} 
 			catch(InterruptedException ex) 
 			{
 			    Thread.currentThread().interrupt();
-			}  
+			}
 		}	
 		// Move m_NextImage into m_CurrentImage for next time -  May not need this
 		ImageA.getGraphics().drawImage(ImageB, 0, 0, imgPanel);
 		// And one final draw to the panel to be sure it's all there
 		gPan.drawImage(ImageA, 0,0, imgPanel); 
-                
 	}
 	
 	//---------------------------------------------------
@@ -86,4 +86,5 @@ public class Trans_CrossDissolve extends Transition
 	{
 		return m_sType;
 	}
+
 }
